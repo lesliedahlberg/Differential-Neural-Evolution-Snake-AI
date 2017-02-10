@@ -1,41 +1,136 @@
 package com.lesliedahlberg;
 
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Random;
+
 public class Main {
 
     public static void main(String[] args) {
-        //UIContext uiContext = new UIContext();
-        //Block block = new Block(uiContext);
-        //Snake snake = new Snake(uiContext, block);
-        //snake.initSnake();
+        final UIContext uiContext = new UIContext();
+        Block block = new Block(uiContext);
+        final Snake snake = new Snake(uiContext, block);
+        snake.initSnake();
 
-        //System.out.println("Hello World!");
+        final SnakeTester snakeTester = new SnakeTester(uiContext, block, snake);
 
-        int input_neurons = 2;
-        int hidden_neurons = 2;
-        int output_neurons = 1;
-        float threshold = 1;
 
-        FFNN ffnn = new FFNN(input_neurons, hidden_neurons, output_neurons, threshold);
+        int dimension = (snake.input_neurons+1) * (snake.hidden_neurons) + (snake.hidden_neurons+1) * (snake.output_neurons);
 
-        float[][] input_weights = new float[][] {{1,0.5f}, {0.5f, 1}};
-        float[][] output_weights = new float[][] {{1}, {1}};
+        System.out.println("DIMENSION = " + dimension);
 
-        ffnn.setWeights(input_weights, output_weights);
+        final PSO swarm = new PSO(snakeTester, new Interval(-1,1), 0.000001f, 25, dimension);
+        swarm.Init();
 
-        float[] output_0_0 = ffnn.feed(new float[]{0, 0});
-        float[] output_0_1 = ffnn.feed(new float[]{0, 1});
-        float[] output_1_0 = ffnn.feed(new float[]{1, 0});
-        float[] output_1_1 = ffnn.feed(new float[]{1, 1});
 
-        System.out.println(output_0_0[0]);
-        System.out.println(output_0_1[0]);
-        System.out.println(output_1_0[0]);
-        System.out.println(output_1_1[0]);
+        uiContext.panel.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent keyEvent) {
 
-        for(int i = 0; i < output_neurons; i++){
-            //System.out.println("output["+i+"]="+output[i]);
-        }
+            }
 
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                if(keyEvent.getKeyCode() == KeyEvent.VK_1){
+                    //System.out.println("PRESS 1");
+                    snakeTester.rate = 200*1000000;
+                    BoardSettings.Rendering = true;
+                    swarm.test();
+                }
+                if(keyEvent.getKeyCode() == KeyEvent.VK_2){
+                    //System.out.println("PRESS 2");
+                    snakeTester.rate = 200*1000000;
+                    BoardSettings.Rendering = true;
+                    swarm.iterate();
+                }
+                if(keyEvent.getKeyCode() == KeyEvent.VK_3){
+                    //System.out.println("PRESS 3");
+                    snakeTester.rate = 1;
+                    BoardSettings.Rendering = false;
+                    swarm.iterate();
+
+
+                }
+                if(keyEvent.getKeyCode() == KeyEvent.VK_4){
+                    snakeTester.rate = 1;
+                    BoardSettings.Rendering = false;
+                    swarm.next(5);
+
+
+                }
+                if(keyEvent.getKeyCode() == KeyEvent.VK_5){
+                    snakeTester.rate = 1;
+                    BoardSettings.Rendering = false;
+                    swarm.next(50);
+
+
+                }
+                if(keyEvent.getKeyCode() == KeyEvent.VK_6){
+                    snakeTester.rate = 1;
+                    BoardSettings.Rendering = false;
+                    swarm.next(100);
+
+
+                }
+                if(keyEvent.getKeyCode() == KeyEvent.VK_F){
+                    //snakeTester.speedUp(2);
+                    snakeTester.rate = 1;
+                    //System.out.println("SPEED = "+ snakeTester.rate);
+
+
+                }
+                if(keyEvent.getKeyCode() == KeyEvent.VK_S){
+                    //snakeTester.slowDown(2);
+                    //System.out.println("SPEED = "+ snakeTester.rate);
+                    snakeTester.rate = 75*1000000;
+
+
+                }
+                if(keyEvent.getKeyCode() == KeyEvent.VK_L){
+                    snake.swarming = false;
+
+
+
+                }
+
+                if(keyEvent.getKeyCode() == KeyEvent.VK_K){
+
+                    snake.swarming = true;
+
+                }
+
+                if(keyEvent.getKeyCode() == KeyEvent.VK_R){
+
+                    BoardSettings.Rendering = true;
+
+                }
+
+                if(keyEvent.getKeyCode() == KeyEvent.VK_T){
+
+                    BoardSettings.Rendering = false;
+
+                }
+
+
+                if(keyEvent.getKeyCode() == KeyEvent.VK_0){
+                    //System.out.println("PRESS 0");
+                    snake.kill();
+                    snake.clearSnake();
+                    uiContext.flush();
+
+                }
+            }
+
+
+            @Override
+            public void keyReleased(KeyEvent keyEvent) {
+
+            }
+        });
 
     }
+
+
+
 }

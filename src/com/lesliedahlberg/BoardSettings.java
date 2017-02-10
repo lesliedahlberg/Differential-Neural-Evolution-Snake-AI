@@ -18,22 +18,21 @@ public class BoardSettings {
     static int defaultSquareX = 0;
     static int defaultSquareY = 0;
 
-    static int columns = 10;
-    static int rows = 10;
+    static int columns = 5;
+    static int rows = 5;
 
-    static int fieldWidth = 25;
-    static int fieldHeight = 25;
+    static int fieldWidth = 50;
+    static int fieldHeight = 50;
 
     static int defaultHeadIndexX = columns/2;
     static int defaultHeadIndexY = rows/2;
 
-    static int numberOfTailsSquares = 5; //(columns + rows)/10;
+    static int numberOfTailsSquares = 2; //(columns + rows)/10;
     static int maxPossibleAiTailSquares = (columns - 1) * 2 + (rows - 1) * 2 - 2;
-    static int speed = 250;
+    static int speed = 10;
     static int blockBonus = (columns + rows) * 6;
     static int safeAmount = 10;
-
-
+    public static boolean Rendering = true;
 
 
     public BoardSettings() {

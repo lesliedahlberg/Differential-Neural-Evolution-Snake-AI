@@ -22,6 +22,11 @@ public class UIContext {
         showFrame();
     }
 
+    public void flush(){
+        panel.updateUI();
+
+    }
+
     private Point[][] newCoordinateArray(int columns, int rows, int fieldWidth, int fieldHeight){
         Point[][] fieldCoordinates = new Point[columns][rows];
         for(int x = 0; x < columns; x++){

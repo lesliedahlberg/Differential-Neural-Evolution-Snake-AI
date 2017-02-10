@@ -9,20 +9,17 @@ public class FFNN {
     int input_neurons;
     int hidden_neurons;
     int output_neurons;
-    float threshold;
 
-    public FFNN(int input_neurons, int hidden_neurons, int output_neurons, float threshold){
+    public FFNN(int input_neurons, int hidden_neurons, int output_neurons){
         this.input_neurons = input_neurons;
         this.hidden_neurons = hidden_neurons;
         this.output_neurons = output_neurons;
-        this.threshold = threshold;
-        //input_weight = new float[input_neurons][hidden_neurons];
-        //output_weight = new float[hidden_neurons][output_neurons];
     }
 
     public void setWeights(float[][] input_weight, float[][] output_weight){
         this.input_weight = input_weight;
         this.output_weight = output_weight;
+
     }
 
     public float sigmoid(float x){
@@ -35,31 +32,25 @@ public class FFNN {
         for(int i = 0; i < input_neurons; i++){
             for(int j = 0; j < hidden_neurons; j++){
                 hidden[j] += input_weight[i][j] * input[i];
-
             }
         }
         for(int j = 0; j < hidden_neurons; j++){
-            hidden[j] -= threshold;
+            hidden[j] += input_weight[input_neurons][j] * -1;
         }
-
         for(int j = 0; j < hidden_neurons; j++){
             hidden[j] = sigmoid(hidden[j]);
         }
-
         for(int i = 0; i < hidden_neurons; i++){
             for(int j = 0; j < output_neurons; j++){
                 output[j] += output_weight[i][j] * hidden[i];
-
             }
         }
         for(int j = 0; j < output_neurons; j++){
-            output[j] -= threshold;
+            output[j] += output_weight[output_neurons][j] * -1;
         }
-
         for(int j = 0; j < output_neurons; j++){
             output[j] = sigmoid(output[j]);
         }
-
         return output;
     }
 

@@ -21,6 +21,7 @@ public class Block {
     }
 
     public void initBlock() {
+        uiContext.panel.repaint();
         if(block != null){
             for (Component comp : block) {
                 if(comp != null)
@@ -34,22 +35,6 @@ public class Block {
         }
         executor = null;
         renderBlocks();
-    }
-
-    public void startBlockAddingClock(){
-        Runnable newBlocks = new Runnable() {
-            @Override
-            public void run() {
-                newRandomBlock();
-            }
-        };
-
-        executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(newBlocks, 0, 200, TimeUnit.MILLISECONDS);
-    }
-
-    public void stopBlockClock(){
-        executor.shutdown();
     }
 
     private Point newRandomPoint(){
@@ -72,8 +57,11 @@ public class Block {
     public void newRandomBlock(){
 
         block[blockIndex] = new Square(newRandomPoint(), new Dimension(BoardSettings.fieldWidth, BoardSettings.fieldHeight), BoardSettings.color2);
-        uiContext.panel.add(block[blockIndex]);
-        uiContext.panel.repaint();
+
+        if(BoardSettings.Rendering) {
+            uiContext.panel.add(block[blockIndex]);
+            uiContext.panel.repaint();
+        }
         blockIndex++;
     }
 

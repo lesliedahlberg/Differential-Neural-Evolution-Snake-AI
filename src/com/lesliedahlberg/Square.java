@@ -22,8 +22,11 @@ public class Square extends JPanel {
 
     public void setPosition(Point point){
         position = point;
-        setLocation(position);
-        repaint();
+        if(BoardSettings.Rendering){
+            setLocation(position);
+            repaint();
+        }
+
     }
 
     public Point getPosition(){
